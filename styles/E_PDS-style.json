@@ -1,0 +1,32 @@
+{
+    "constants": {
+    },
+    "definitions": {
+        "visible": "=> F.get('NOTE') != null && F.get('NOTE') < 3",
+        "isCloned": "=> F.getId() === undefined",
+        "color": "=> D.isCloned ? '#FF0000' : '#0000FF'",
+        "width": "=> D.isCloned ? 10 : 4"
+    },
+    "format": "geojson",
+    "crs": "EPSG:4326",
+    "group": "Points de service",
+    "title": "Points de service",
+    "class": "=> F.get('COMPO')",
+    "scales": [
+        0,
+        1500
+    ],
+    "cacheKey": "=> [compo, D.isCloned]",
+    "static": [
+        {
+            "image": {
+                "img": "=> `<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><circle cx='50' cy='50' r='45' stroke='${color}' stroke-width='${width}' fill-opacity='0.2' fill='${color}' /><circle cx='50' cy='50' r='30' stroke='${color}' stroke-width='${width}' fill='none' /><line x1='25' y1='40' x2='75' y2='40' stroke='${color}' stroke-linecap='round' stroke-width='${width}' /><line x1='25' y1='60' x2='75' y2='60' stroke='${color}' stroke-linecap='round' stroke-width='${width}' /></svg>`",
+                "imgSize": [100, 100],
+                "scale": 0.15
+            }
+        }
+    ],
+    "dynamic": {
+        "#/0/image/rotation": "=> (feature.get('GEORIENT') ?? 0) * Math.PI / 180"
+    }
+}

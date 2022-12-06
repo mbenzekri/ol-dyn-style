@@ -1,0 +1,830 @@
+{ 
+    "definitions": {
+        "Function": {
+            "oneOf": [
+                {
+                    "type": "string",
+                    "pattern": "^=>"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "pattern": "^(\\?.+|[ \t]*default *)=>.*$"
+                    }
+                }
+            ]
+        },
+        "StringOrFunction": {
+            "anyOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "#/definitions/Function"
+                }
+            ]
+        },
+        "IntegerOrFunction": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/Function"
+                },
+                {
+                    "type": "number"
+                }
+            ]
+        },
+        "NumberOrFunction": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/Function"
+                },
+                {
+                    "type": "number"
+                }
+            ]
+        },
+        "BooleanOrFunction": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/Function"
+                },
+                {
+                    "type": "boolean"
+                }
+            ]
+        },
+        "ArrayNumberOrFunction": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/Function"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    }
+                }
+            ]
+        },
+        "NumberOrArrayNumberOrFunction": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                {
+                        "type": "number"
+                }
+            ]
+        },
+        "CssColor": {
+            "anyOf": [
+                {
+                    "type": "string",
+                    "pattern": "#([0-9A-F]{3}|[0-9A-F]{6})"
+                },
+                {
+                    "type": "string",
+                    "pattern": "rgba([0-9]{1-3},[0-9]{1-3},[0-9]{1-3}(,[0-9]{1-3})?)"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "number"
+                    },
+                    "minItems": 3,
+                    "maxItems": 4
+                },
+                {
+                    "$ref": "#/definitions/Function"
+                }
+            ]
+        },
+        "LinearGradient": {
+            "type": "object",
+            "properties": {
+                "x0": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "y0": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "x1": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "y1": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "colorStops": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "offset": {
+                                "$ref": "#/definitions/NumberOrFunction"
+                            },
+                            "color": {
+                                "$ref": "#/definitions/CssColor"
+                            }
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "x0",
+                "y0",
+                "x1",
+                "y1"
+            ]
+        },
+        "RadialGradient": {
+            "type": "object",
+            "properties": {
+                "x0": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "y0": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "r0": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "x1": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "y1": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "r1": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "colorStops": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "offset": {
+                                "$ref": "#/definitions/NumberOrFunction"
+                            },
+                            "color": {
+                                "$ref": "#/definitions/CssColor"
+                            }
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "x0",
+                "y0",
+                "r0",
+                "x1",
+                "y1",
+                "r1"
+            ]
+        },
+        "CanvasPattern": {
+            "type": "object",
+            "properties": {
+                "image": {
+                    "$ref": "#/definitions/StringOrFunction"
+                },
+                "repetition": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "type": "string",
+                            "enum": [
+                                "repeat",
+                                "repeat-x",
+                                "repeat-y",
+                                "no-repeat"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "image",
+                "repetition"
+            ]
+        },
+        "Color": {
+            "anyOf": [
+                {
+                    "$ref": "#/definitions/CssColor"
+                },
+                {
+                    "$ref": "#/definitions/LinearGradient"
+                },
+                {
+                    "$ref": "#/definitions/RadialGradient"
+                },
+                {
+                    "$ref": "#/definitions/CanvasPattern"
+                }
+            ]
+        },
+        "Fill": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "$ref": "#/definitions/Color"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "color"
+            ]
+        },
+        "Stroke": {
+            "type": "object",
+            "properties": {
+                "color": {
+                    "$ref": "#/definitions/Color"
+                },
+                "width": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "lineCap": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "butt",
+                                "round",
+                                "miter"
+                            ]
+                        },
+                        {
+                            "$ref": "#/definitions/Function"
+                        }
+                    ]
+                },
+                "lineJoin": {
+                    "oneOf": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "bevel",
+                                "round",
+                                "miter"
+                            ]
+                        },
+                        {
+                            "$ref": "#/definitions/Function"
+                        }
+                    ]
+                },
+                "lineDash": {
+                    "oneOf": [
+                        {
+                            "type": "array",
+                            "items": {
+                                "type": "number"
+                            }
+                        },
+                        {
+                            "$ref": "#/definitions/Function"
+                        }
+                    ]
+                },
+                "lineDashOffset": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "miterLimit": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "color",
+                "width"
+            ]
+        },
+        "Geometry": {
+            "oneOf": [
+                {
+                    "type": "string"
+                },
+                {
+                    "$ref": "#/definitions/Function"
+                }
+            ]
+        },
+        "Icon": {
+            "type": "object",
+            "properties": {
+                "anchor": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "anchorOrigin": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "type": "string",
+                            "enum": [
+                                "bottom-left",
+                                "bottom-right",
+                                "top-left",
+                                "top-right"
+                            ]
+                        }
+                    ]
+                },
+                "anchorXUnits": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "fraction",
+                                "pixels"
+                            ]
+                        }
+                    ]
+                },
+                "anchorYUnits": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "fraction",
+                                "pixels"
+                            ]
+                        }
+                    ]
+                },
+                "color": {
+                    "$ref": "#/definitions/Color"
+                },
+                "crossOrigin": {
+                    "$ref": "#/definitions/StringOrFunction"
+                },
+                "img": {
+                    "$ref": "#/definitions/StringOrFunction"
+                },
+                "imgSize": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "displacement": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "opacity": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "scale": {
+                    "$ref": "#/definitions/NumberOrArrayNumberOrFunction"
+                },
+                "rotateWithView": {
+                    "$ref": "#/definitions/BooleanOrFunction"
+                },
+                "rotation": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "offset": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "offsetOrigin": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "bottom-left",
+                                "bottom-right",
+                                "top-left",
+                                "top-right"
+                            ]
+                        }
+                    ]
+                },
+                "size": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "declutterMode": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "declutter",
+                                "obstacle",
+                                "none"
+                            ]
+                        }
+                    ]
+                },
+                "src": {
+                    "$ref": "#/definitions/StringOrFunction"
+                }
+            },
+            "required": [
+                "img"
+            ],
+            "additionalProperties": false
+        },
+        "RegularShape": {
+            "type": "object",
+            "properties": {
+                "points": {
+                    "$ref": "#/definitions/IntegerOrFunction"
+                },
+                "fill": {
+                    "$ref": "#/definitions/Fill"
+                },
+                "opacity": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "radius": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "radius2": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "angle": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "displacement": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "stroke": {
+                    "$ref": "#/definitions/Stroke"
+                },
+                "rotation": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "rotateWithView": {
+                    "$ref": "#/definitions/BooleanOrFunction"
+                },
+                "scale": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "declutterMode": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "declutter",
+                                "obstacle",
+                                "none",
+                                null
+                            ]
+                        }
+                    ]
+                },
+                "src": {
+                    "$ref": "#/definitions/StringOrFunction"
+                }
+            },
+            "required": [
+                "points"
+            ],
+            "additionalProperties": false
+        },
+        "Circle": {
+            "type": "object",
+            "properties": {
+                "radius": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "fill": {
+                    "$ref": "#/definitions/Fill"
+                },
+                "stroke": {
+                    "$ref": "#/definitions/Stroke"
+                },
+                "displacement": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "scale": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "rotation": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "rotateWithView": {
+                    "$ref": "#/definitions/BooleanOrFunction"
+                },
+                "declutterMode": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "declutter",
+                                "obstacle",
+                                "none"
+                            ]
+                        }
+                    ]
+                }
+            },
+            "required": [
+                "radius"
+            ],
+            "additionalProperties": false
+        },
+        "Image": {
+            "oneOf": [
+                {
+                    "$ref": "#/definitions/Function"
+                },
+                {
+                    "$ref": "#/definitions/Icon"
+                },
+                {
+                    "$ref": "#/definitions/RegularShape"
+                },
+                {
+                    "$ref": "#/definitions/Circle"
+                }
+            ]
+        },
+        "Text": {
+            "type": "object",
+            "properties": {
+                "font": {
+                    "$ref": "#/definitions/StringOrFunction"
+                },
+                "maxAngle": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "offsetX": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "offsetY": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "overflow": {
+                    "$ref": "#/definitions/BooleanOrFunction"
+                },
+                "stroke": {
+                    "$ref": "#/definitions/Stroke"
+                },
+                "placement": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "scale": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                },
+                "rotateWithView": {
+                    "$ref": "#/definitions/BooleanOrFunction"
+                },
+                "rotation": {
+                    "$ref": "#/definitions/BooleanOrFunction"
+                },
+                "text": {
+                    "$ref": "#/definitions/StringOrFunction"
+                },
+                "textAlign": {
+                    "oneOf" : [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "left",
+                                "right",
+                                "center",
+                                "end",
+                                "start",
+                                "string"
+                            ]
+                        }
+                    ]
+                },
+                "justify": {
+                    "oneOf" : [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "left",
+                                "right",
+                                "center",
+                                "end",
+                                "start",
+                                "string"
+                            ]
+                        }
+                    ]
+                },
+                "textBaseline": {
+                    "oneOf" : [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "bottom",
+                                "top",
+                                "middle",
+                                "alphabetic",
+                                "hanging",
+                                "ideographic"
+                            ]
+                        }
+                    ]
+                },
+                "fill": {
+                    "$ref": "#/definitions/Fill"
+                },
+                "backgroundFill": {
+                    "$ref": "#/definitions/Fill"
+                },
+                "backgroundStroke": {
+                    "$ref": "#/definitions/Stroke"
+                },
+                "padding": {
+                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                }
+            },
+            "additionalProperties": false
+        },
+        "Style": {
+            "type": "object",
+            "properties": {
+                "when": {
+                    "$ref": "#/definitions/Function"
+                },
+                "geometry": {
+                    "$ref": "#/definitions/Geometry"
+                },
+                "fill": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Fill"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "stroke": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Stroke"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "image": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Image"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "text": {
+                    "oneOf": [
+                        {
+                            "$ref": "#/definitions/Text"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "zIndex": {
+                    "$ref": "#/definitions/IntegerOrFunction"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
+    "type": "object",
+    "properties": {
+        "constants": {
+            "type": "object",
+            "patternProperties": {
+                "^.*$": true
+            },
+            "additionalProperties": false
+        },
+        "definitions": {
+            "type": "object",
+            "patternProperties": {
+                "^.*$": {
+                    "anyOf": [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "$ref": "#/definitions/LinearGradient"
+                        },
+                        {
+                            "$ref": "#/definitions/RadialGradient"
+                        },
+                        {
+                            "$ref": "#/definitions/CanvasPattern"
+                        },
+                        {
+                            "$ref": "#/definitions/Color"
+                        },
+                        {
+                            "$ref": "#/definitions/Fill"
+                        },
+                        {
+                            "$ref": "#/definitions/Stroke"
+                        },
+                        {
+                            "$ref": "#/definitions/Geometry"
+                        },
+                        {
+                            "$ref": "#/definitions/Icon"
+                        },
+                        {
+                            "$ref": "#/definitions/RegularShape"
+                        },
+                        {
+                            "$ref": "#/definitions/Circle"
+                        },
+                        {
+                            "$ref": "#/definitions/Text"
+                        },
+                        {
+                            "$ref": "#/definitions/Style"
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "format": {
+            "enum": [
+                "geojson",
+                "shapefile",
+                "mapinfo"
+            ]
+        },
+        "group": {
+            "type": "string"
+        },
+        "title": {
+            "type": "string"
+        },
+        "id": {
+            "type": "string"
+        },
+        "class": {
+            "$ref": "#/definitions/StringOrFunction"
+        },
+        "crs": {
+            "type": "string",
+            "pattern": "^EPSG:[0-9]{4,10}"
+        },
+        "scales": {
+            "type": "array",
+            "items": {
+                "type": "number"
+            },
+            "minItems": 2
+        },
+        "cacheKey": {
+            "$ref": "#/definitions/Function"
+        },
+        "static": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "$ref": "#/definitions/Style"
+            }
+        },
+        "dynamic": {
+            "type": "object",
+            "patternProperties": {
+                "^#/[0-9]+/(fill|stroke|image|text).*$": { "$ref" : "#/definitions/Function"}
+            },
+            "additionalProperties": false
+        },
+        "visible": {
+            "type": "boolean"
+        }
+    },
+    "required": [
+        "static"
+    ],
+    "additionalProperties": false
+}

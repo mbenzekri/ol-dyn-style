@@ -1,0 +1,114 @@
+{
+    "definitions": {
+        "isADechar": "=> F.get('COMPO') === 'E_DECHAR'",
+        "isAHydran": "=> F.get('COMPO') === 'E_HYDRAN'",
+        "E_HYDRAN": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><circle cx='50' cy='50' r='45' stroke='red'  stroke-width='4' fill-opacity='0.5' fill='red'/><line x1='18' y1='18' x2='81' y2='81' stroke='red' stroke-linecap='butt' stroke-width='4' /></svg>",
+            "imgSize": [
+                100,
+                100
+            ],
+            "scale": 0.30
+        },
+        "E_HYDRAN,3000": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><circle cx='50' cy='50' r='45' stroke='#FF0000' stroke-width='4' fill='#FF0000'/></svg>",
+            "imgSize": [
+                100,
+                100
+            ],
+            "scale": 0.15
+        },
+        "E_DECHAR,DECHARGE": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='120px' height='60px' version='1.1'><circle cx='60' cy='30' r='8' stroke='blue'  stroke-width='4'  fill='blue'/><line x1='60' y1='30' x2='90' y2='30' stroke='blue' stroke-linecap='butt' stroke-width='2' /><polygon points='90,20 90,40 115,30' stroke='blue' stroke-width='1' fill='blue'/></svg>",
+            "imgSize": [
+                120,
+                60
+            ],
+            "scale": 0.5
+        },
+        "E_DECHAR,VENTOUSE": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='110px' height='100px' version='1.1'><line x1='50' y1='30' x2='100' y2='30' stroke='white' stroke-linecap='butt' stroke-width='8' /><line x1='50' y1='70' x2='100' y2='70' stroke='white' stroke-linecap='butt' stroke-width='8' /><path d='M85,10 A50,50,0,0,1,85,90' stroke='white'  stroke-width='8' fill='none'/><line x1='50' y1='30' x2='100' y2='30' stroke='blue' stroke-linecap='butt' stroke-width='4' /><line x1='50' y1='70' x2='100' y2='70' stroke='blue' stroke-linecap='butt' stroke-width='4' /><path d='M85,10 A50,50,0,0,1,85,90' stroke='blue'  stroke-width='4' fill='none'/></svg>",
+            "imgSize": [
+                110,
+                100
+            ],
+            "scale": 0.35
+        },
+        "E_BOUCHE": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><polygon points='10,30 10,70 90,70 90,30' stroke='blue' stroke-width='4' fill='none' /></svg>",
+            "imgSize": [
+                100,
+                100
+            ],
+            "scale": 0.35
+        },
+        "E_REGBRA": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><rect x='5' y='5' width='90' height='90' stroke='blue' stroke-width='4' fill='white'/></svg>",
+            "imgSize": [
+                100,
+                100
+            ],
+            "scale": 0.10
+        },
+        "E_BOUCLE": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='50px' height='100px' preserveAspectRatio='xMidYMid meet' version='1.1'><g transform='translate(0.000000,52.000000) scale(0.100000,-0.100000)' fill='blue' stroke='none'><path d='M145 501 c-95 -43 -145 -126 -145 -241 0 -115 50 -198 145 -241 53  -25 156 -25 210 0 95 43 145 125 145 241 0 116 -50 198 -145 241 -54 25 -157 25 -210 0z m172 -7 c26 -9 51 -19 56 -23 4 -4 -16 -46 -44 -94 -47 -80 -54 -87 -83 -87 -28 0 -36 7 -79 79 -26 44 -47 83 -47 89 0 8 45 31 90 46 28 9 59  6 107 -10z m12 -341 c68 -98 68 -100 -12 -127 -60 -20 -75 -20 -134 0 -77 26 -77 25 -19 124 44 77 55 90 78 90 22 0 36 -14 87 -87z'/></g></svg>",
+            "imgSize": [
+                50,
+                100
+            ],
+            "scale": 0.25
+        },
+        "DEFAUT": {
+            "img": "<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><circle cx='50' cy='50' r='45' stroke='#33CC33' stroke-width='4' fill='#33CC33'/></svg>",
+            "imgSize": [
+                100,
+                100
+            ],
+            "scale": 0.10
+        },
+        "compo": "=> F.get('COMPO')",
+        "isHydran": "=> class === 'E_HYDRAN' ",
+        "isDechar": "=> class === 'E_DECHAR'",
+        "typo": "=> D.isDechar ?  F.get('TYPO') ?? 'DEFAUT' : 'DEFAUT'"
+    },
+    "format": "geojson",
+    "crs": "EPSG:4326",
+    "group": "Réseau Eau",
+    "title": "Accessoire AEP",
+    "id": "NUMERO",
+    "scales": [
+        0,
+        1500,
+        3000
+    ],
+    "class": "=> F.get('COMPO')",
+    "cacheKey": "=> [class, D.typo, LSCALE]",
+    "static": [
+        {
+            "image":  [
+                    "? scale <= 1500 && !D.isDechar => D[class]",
+                    "? scale <= 1500 && D.isDechar => D[[class, D.typo]]",
+                    "? D.isHydran => D[[class, LSCALE]])",
+                    "default => null"
+                ],
+            "text": {
+                "font": "bold 18px Arial",
+                "fill": {
+                    "color": "=> D.isHydran ? '#FF0000' : '#0000FF'"
+                },
+                "stroke": {
+                    "color": "#FFFFFF",
+                    "width": 2
+                },
+                "textAlign": "center",
+                "textBaseline": "middle",
+                "offsetX": 20,
+                "offsetY": -20
+            }
+        }
+    ],
+    "dynamic": {
+        "#/0/image/img/rotation": "=> (F.get('GEORIENT') ?? 0 ) * Math.PI / 180 : 0",
+        "#/0/text/text": "=> F.get('TXTGRA')?.replace(/;/, '\n')"
+    }
+}

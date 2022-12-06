@@ -1,0 +1,13 @@
+{
+    "format": "geojson",
+    "group": "Dummy",
+    "title": "Empty style (nothing drawn)",
+    "static": [
+        {
+            "fill":null,
+            "stroke": null,
+            "image":null,
+            "text":null
+        }
+    ]
+}

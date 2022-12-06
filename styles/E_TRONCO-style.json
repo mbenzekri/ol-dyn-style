@@ -1,0 +1,79 @@
+{
+    "constants": {
+        "standard": "#0000FF",
+        "prive": "#0000FF",
+        "etages": {
+            "BAS": "#FFFF00",
+            "HAUT": "#FF0000",
+            "MOYEN": "#0000FF"
+        },
+        "thematics": [
+            {
+                "key": "STYLETAG",
+                "value": {
+                    "nom": "Pression",
+                    "defaut": "0,0,0"
+                }
+            },
+            {
+                "key": "STYLSECT",
+                "value": {
+                    "nom": "Pression",
+                    "defaut": "0,0,0"
+                }
+            }
+        ]
+    },
+    "definitions": {
+        "width": "=> {  const w = 3 + Math.round(feature.get('DIAMETRE') / 100); return (w < 3) ? 3 : (w > 10) ? 10 : w }",
+        "anglePlusLongSegment": "=> { const coords = F.ft_getCoordMaxLength(); return os_getAngleForTxtgra(coords.p1, coords.p2) }",
+        "isLong": "=> F.get('DIAMETRE') > 0 && scale < 1500 && (F.get('LONGCALC') ?? F.ft_getLength()) > 10",
+        "isEtage": "=> T === 'ETAGE' ",
+        "isThematic": "=> T != 'STANDARD' && T != ETAGE",
+        "isPrive": "=> F.get('NUMCONTR') === '0') || (F.get('MO') === 'PRIVE'"
+    },
+    "format": "geojson",
+    "crs": "EPSG:4326",
+    "group": "Réseau Eau",
+    "title": "Canalisation AEP",
+    "scales": [
+        0,
+        15000
+    ],
+    "static": [
+        {
+            "stroke": {
+                "color": [
+                    "? D.isPrive => C.prive",
+                    "? D.isEtage => C.etages.[F.get('ETAGE')]",
+                    "? D.isThematic => `rgba(${F.get(T)})`",
+                    "default => C.standard "
+                ],
+                "width": "=> D.isPrive ? 2 : D.width",
+                "lineDash": "=> D.isPrive ? [10, 15] : []"
+            },
+            "fill": null,
+            "image": null,
+            "text": {
+                "font": "bold 12px Arial",
+                "fill": {
+                    "color": "#000000"
+                },
+                "stroke": {
+                    "color": "#FFFFFF",
+                    "width": 2
+                },
+                "justify": "left",
+                "textAlign": "center",
+                "textBaseline": "bottom",
+                "overflow": true,
+                "offsetX": 0,
+                "offsetY": 0
+            }
+        }
+    ],
+    "dynamic": {
+        "#/0/text/text": "=> D.isLong ? F.get('DIAMETRE') : null",
+        "#/0/text/rotation": "=> D.isLong ? D.anglePlusLongSegment : 0"
+    }
+}

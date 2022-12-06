@@ -1,0 +1,63 @@
+{
+    "constants": {
+        "E_FUITE,DETECTEE" : "#D9D90E",
+        "E_FUITE,TRANSMISE" : "#D9D90E",
+        "E_FUITE,REPAREE" : "#0000FF",
+        "E_FUITE,SECHE" : "#05B405",
+        "E_FUITE,DEFAUT" : "#FF8C00",
+        "E_SFUITE,O" : "#FF0000",
+        "E_SFUITE,N" : "#808080",
+        "E_SFUITE,DEFAUT" : "#FF8C00"
+    },
+    "definitions": {
+        "E_FUITE,1500": {
+            "img": "=> `<svg xmlns='http://www.w3.org/2000/svg' width='96px' height='96px' version='1.1' viewBox='-14 -14 124 124' preserveAspectRatio='xMinYMin meet'><circle cx='48' cy='48' r='60' stroke='${D.stroke}' stroke-width='4' fill-opacity='0.2' fill='${D.stroke}'/><path d='M49.015,0.803 c-0.133-1.071-1.896-1.071-2.029,0 C42.57,36.344,20,43.666,20,68.367 C20,83.627,32.816,96,48,96 s28-12.373,28-27.633 C76,43.666,53.43,36.344,49.015,0.803z M44.751,40.09 c-0.297,1.095-0.615,2.223-0.942,3.386 c-2.007,7.123-4.281,15.195-4.281,24.537 c0,5.055-2.988,6.854-5.784,6.854   c-3.189,0-5.782-2.616-5.782-5.831 c0-11.034,5.315-18.243,10.005-24.604 c1.469-1.991,2.855-3.873,3.983-5.749 c0.516-0.856,1.903-0.82,2.533,0.029 C44.781,39.116,44.879,39.619,44.751,40.09z' fill='${D.stroke}'/></svg>`",
+            "imgSize": [100, 100],
+            "scale": 0.4
+        },
+        "E_FUITE,3000": {
+            "img": "=> `<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><circle cx='50' cy='50' r='45' stroke='$D.{stroke}' stroke-width='4' fill-opacity='0.5' fill='${D.stroke}'/></svg>`",
+            "imgSize": [100, 100],
+            "scale": 0.3 
+        },
+        "E_SFUITE,1500": {
+            "img": "=> `<svg xmlns='http://www.w3.org/2000/svg' width='96px' height='96px' version='1.1' viewBox='-14 -14 124 124' preserveAspectRatio='xMinYMin meet'><circle cx='48' cy='48' r='60' stroke='${D.stroke}' stroke-width='4' fill-opacity='0.2' fill='${D.stroke}'/><path d='M49.015,0.803 c-0.133-1.071-1.896-1.071-2.029,0 C42.57,36.344,20,43.666,20,68.367 C20,83.627,32.816,96,48,96 s28-12.373,28-27.633 C76,43.666,53.43,36.344,49.015,0.803z M44.751,40.09 c-0.297,1.095-0.615,2.223-0.942,3.386 c-2.007,7.123-4.281,15.195-4.281,24.537 c0,5.055-2.988,6.854-5.784,6.854   c-3.189,0-5.782-2.616-5.782-5.831 c0-11.034,5.315-18.243,10.005-24.604 c1.469-1.991,2.855-3.873,3.983-5.749 c0.516-0.856,1.903-0.82,2.533,0.029 C44.781,39.116,44.879,39.619,44.751,40.09z' fill='D.stroke}'/></svg>`",
+            "imgSize": [100, 100],
+            "scale": 0.4
+        },
+        "E_SFUITE,3000": {
+            "img": "=> `<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><circle cx='50' cy='50' r='45' stroke='${D.stroke}' stroke-width='4' fill-opacity='0.5' fill='${D.stroke}'/></svg>`",
+            "imgSize": [100, 100],
+            "scale": 0.3
+        },
+        "DEFAUT": {
+            "img": "=> `<svg xmlns='http://www.w3.org/2000/svg' width='100px' height='100px' version='1.1'><circle cx='50' cy='50' r='45' stroke='${stroke}' stroke-width='4' fill='${stroke}'/></svg>`",
+            "imgSize": [100, 100],
+            "scale": 0.10
+        },
+        "stroke": "=> D['COLOR',class,etat]",
+        "etat": "=> F.get(class == 'E_FUITE' ?  'ETAT' : 'CONFIRM')"
+    },
+    "format": "geojson",
+    "crs": "EPSG:4326",
+    "group": "Evénements Eau",
+    "title": "Evenements EAU",
+    "id": "IDENT",
+    "scales": [
+        0,
+        1500,
+        3000
+    ],
+    "class": "=> F.get('COMPO')",
+    "cacheKey": "=> [class, USCALE, D.etat]",
+    "static": [
+        { 
+            "when" : "=> ['E_FUITE','E_SFUITE'].includes(class)",
+            "image": "=> D[[class,USCALE,etat]] "
+        }
+    ],
+    "dynamic":  {
+        "#/0/image/img/rotation" : "=> (F.get('GEORIENT') ?? 0) * Math.PI / 180 : 0"
+    }
+}
+

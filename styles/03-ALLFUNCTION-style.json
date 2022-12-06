@@ -1,0 +1,19 @@
+{
+    "format": "geojson",
+    "group": "Dummy",
+    "title": "Empty style (nothing drawn)",
+    "static": [
+        {
+            "stroke" : {
+                "color" : "=> ",
+                 "lineCap" : "=> ",
+                 "lineDash": "=> ",
+                 "lineDashOffset": "=> ",
+                 "lineJoin": "=> ",
+                 "miterLimit":"=> ",
+                 "width":"=>"
+
+            }
+        }
+    ]
+}

@@ -1,0 +1,19 @@
+{
+    "constants": {
+    },
+    "definitions": {
+    },
+    "format": "geojson",
+    "crs": "EPSG:4326",
+    "group": "Réseau Eau",
+    "title": "Branchement AEP",
+    "scales" : [0,1500],
+    "static": [
+        {
+            "stroke": {
+                "color":  "#0000FF",
+                "width": 1
+            }
+        }
+    ]
+}
