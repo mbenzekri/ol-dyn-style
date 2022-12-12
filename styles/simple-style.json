@@ -1,16 +1,28 @@
 {
-    "static": [
-        {
+    "constants": {
+        "default_color" : "#FF0000"
+    },
+    "static": {
+        "simple": {
+            "fill": {
+                "color": "=> C.default_color"
+            },
             "stroke": {
                 "width": 5,
-                "color": "#FF0000"
+                "color": "=> C.default_color"
             },
             "image": {
                 "radius": 20,
-                "fill" : {
-                    "color": "#0000FF"
+                "fill": {
+                    "color": "=> C.default_color"
                 }
+            },
+            "text": {
+                "type": "Text",
+                "text": "hello !",
+                "color" : "=> C.default_color",
+                "font": "bold 14px serif"
             }
         }
-    ]
+    }
 }

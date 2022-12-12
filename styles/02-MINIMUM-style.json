@@ -1,9 +1,0 @@
-{
-    "format": "geojson",
-    "group": "Dummy",
-    "title": "Empty style (nothing drawn)",
-    "static": [
-        {
-        }
-    ]
-}

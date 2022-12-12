@@ -104,6 +104,9 @@
         "LinearGradient": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "LinearGradient"
+                },
                 "x0": {
                     "$ref": "#/definitions/NumberOrFunction"
                 },
@@ -133,6 +136,7 @@
             },
             "additionalProperties": false,
             "required": [
+                "type",
                 "x0",
                 "y0",
                 "x1",
@@ -142,6 +146,9 @@
         "RadialGradient": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "RadialGradient"
+                },
                 "x0": {
                     "$ref": "#/definitions/NumberOrFunction"
                 },
@@ -177,6 +184,7 @@
             },
             "additionalProperties": false,
             "required": [
+                "type",
                 "x0",
                 "y0",
                 "r0",
@@ -185,9 +193,50 @@
                 "r1"
             ]
         },
+        "ConicGradient": {
+            "type": "object",
+            "properties": {
+                "type": {
+                    "const": "ConicGradient"
+                },
+                "startAngle": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "x": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "y": {
+                    "$ref": "#/definitions/NumberOrFunction"
+                },
+                "colorStops": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "offset": {
+                                "$ref": "#/definitions/NumberOrFunction"
+                            },
+                            "color": {
+                                "$ref": "#/definitions/CssColor"
+                            }
+                        }
+                    }
+                }
+            },
+            "additionalProperties": false,
+            "required": [
+                "type",                
+                "startAngle",
+                "y",
+                "x"
+            ]
+        },
         "CanvasPattern": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "CanvasPattern"
+                },
                 "image": {
                     "$ref": "#/definitions/StringOrFunction"
                 },
@@ -210,6 +259,7 @@
             },
             "additionalProperties": false,
             "required": [
+                "type",
                 "image",
                 "repetition"
             ]
@@ -233,18 +283,25 @@
         "Fill": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "Fill"
+                },
                 "color": {
                     "$ref": "#/definitions/Color"
                 }
             },
             "additionalProperties": false,
             "required": [
+                "type",
                 "color"
             ]
         },
         "Stroke": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "Stroke"
+                },
                 "color": {
                     "$ref": "#/definitions/Color"
                 },
@@ -303,6 +360,7 @@
             },
             "additionalProperties": false,
             "required": [
+                "type",
                 "color",
                 "width"
             ]
@@ -320,6 +378,9 @@
         "Icon": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "Icon"
+                },
                 "anchor": {
                     "$ref": "#/definitions/ArrayNumberOrFunction"
                 },
@@ -439,6 +500,9 @@
         "RegularShape": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "RegularShape"
+                },
                 "points": {
                     "$ref": "#/definitions/IntegerOrFunction"
                 },
@@ -492,6 +556,7 @@
                 }
             },
             "required": [
+                "type",
                 "points"
             ],
             "additionalProperties": false
@@ -499,6 +564,9 @@
         "Circle": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "Circle"
+                },
                 "radius": {
                     "$ref": "#/definitions/NumberOrFunction"
                 },
@@ -536,6 +604,7 @@
                 }
             },
             "required": [
+                "type",
                 "radius"
             ],
             "additionalProperties": false
@@ -559,6 +628,9 @@
         "Text": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "Text"
+                },
                 "font": {
                     "$ref": "#/definitions/StringOrFunction"
                 },
@@ -578,7 +650,17 @@
                     "$ref": "#/definitions/Stroke"
                 },
                 "placement": {
-                    "$ref": "#/definitions/ArrayNumberOrFunction"
+                    "oneOf" : [
+                        {
+                            "$ref": "#/definitions/Function"
+                        },
+                        {
+                            "enum": [
+                                "point",
+                                "line"
+                            ]
+                        }
+                    ]
                 },
                 "scale": {
                     "$ref": "#/definitions/ArrayNumberOrFunction"
@@ -656,62 +738,43 @@
                     "$ref": "#/definitions/ArrayNumberOrFunction"
                 }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required": [
+                "type"
+            ]
         },
         "Style": {
             "type": "object",
             "properties": {
+                "type": {
+                    "const": "Style"
+                },
                 "when": {
                     "$ref": "#/definitions/Function"
                 },
                 "geometry": {
                     "$ref": "#/definitions/Geometry"
                 },
-                "fill": {
-                    "oneOf": [
-                        {
-                            "$ref": "#/definitions/Fill"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
+                "fill":                         {
+                    "$ref": "#/definitions/Fill"
                 },
                 "stroke": {
-                    "oneOf": [
-                        {
-                            "$ref": "#/definitions/Stroke"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
+                    "$ref": "#/definitions/Stroke"
                 },
                 "image": {
-                    "oneOf": [
-                        {
-                            "$ref": "#/definitions/Image"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
+                    "$ref": "#/definitions/Image"
                 },
                 "text": {
-                    "oneOf": [
-                        {
-                            "$ref": "#/definitions/Text"
-                        },
-                        {
-                            "type": "null"
-                        }
-                    ]
+                    "$ref": "#/definitions/Text"
                 },
                 "zIndex": {
                     "$ref": "#/definitions/IntegerOrFunction"
                 }
             },
-            "additionalProperties": false
+            "additionalProperties": false,
+            "required":[
+                "type"
+            ]
         }
     },
     "type": "object",
@@ -772,6 +835,9 @@
             },
             "additionalProperties": false
         },
+        "debug": {
+            "type": "boolean"
+        },
         "format": {
             "enum": [
                 "geojson",
@@ -806,16 +872,25 @@
             "$ref": "#/definitions/Function"
         },
         "static": {
-            "type": "array",
-            "minItems": 1,
-            "items": {
+            "type": "object",
+            "patternProperties": {
+                "pattern": ".*",
                 "$ref": "#/definitions/Style"
             }
         },
         "dynamic": {
-            "type": "object",
-            "patternProperties": {
-                "^#/[0-9]+/(fill|stroke|image|text).*$": { "$ref" : "#/definitions/Function"}
+            "type": "array",
+            "items": {
+                "type" : "object",
+                "properties": {
+                    "pointer" : {
+                        "type" : "string",
+                        "pattern": "^#/[^\/]+/(fill|stroke|image|text).*$"
+                    },
+                    "value": { 
+                        "$ref" : "#/definitions/Function"
+                    }
+                }
             },
             "additionalProperties": false
         },
